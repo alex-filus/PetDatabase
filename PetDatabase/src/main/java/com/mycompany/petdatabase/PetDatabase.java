@@ -75,11 +75,46 @@ public class PetDatabase {
                 //code here
             }
             else if (choice == 5) {
-                //code here
+                System.out.println("Enter name of the pet you want to search: ");
+                String searchName = scanner.nextLine();
+                
+                boolean nameFound = false;
+                
+                for (Pet pet : pets) {
+                    if (pet.getName().equalsIgnoreCase(searchName)) {
+                        System.out.println(
+                        "ID: " + pet.getID() +
+                        " Name: " + pet.getName() +
+                        " Age: " + pet.getAge()
+                        );
+                        nameFound = true;
+                    }
+                }
+                if (!nameFound) {
+                    System.out.println("No pets found with that name.");
+                }
             }
             else if (choice == 6) {
-                //code here
+                System.out.println("Enter age of the pet you would like to search: ");
+                int searchAge = scanner.nextInt();
+                scanner.nextLine();
+                
+                boolean ageFound = false;
+                
+                for (Pet pet: pets) {
+                    if (pet.getAge() == searchAge) {
+                        System.out.println(
+                        "ID: " + pet.getID() +
+                        " Name: " + pet.getName() +
+                        " Age: " + pet.getAge());
+               
+                    ageFound = true;
+                }
+                }
+                if (!ageFound) {
+                    System.out.println("No pets found with that age.");
             }
+        }
             else if (choice == 7) {
                 System.out.println("Goodbye!");
                 running = false; //exit program
