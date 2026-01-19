@@ -42,7 +42,7 @@ public class PetDatabase {
                     System.out.println("|  ID  |   NAME   |  AGE  |");
                     System.out.println("+----------------------+");
                     for (Pet pet : pets) {
-                        System.out.println("|   " + pet.getID() + "  |  " + pet.getName() + "   |  " + pet.getAge() + "  1 | ");
+                        System.out.println("|   " + pet.getID() + "  |  " + pet.getName() + "   |  " + pet.getAge() + "  | ");
                     }
                     System.out.println("+----------------------+");
                 }
@@ -69,10 +69,51 @@ public class PetDatabase {
             }
             
             else if (choice == 3) {
-                //code here
+                System.out.println("Enter the ID of the pet to update: ");
+                int updateID = scanner.nextInt();
+                scanner.nextLine();
+                
+                boolean idFound = false;
+                
+                for (Pet pet: pets) {
+                    if (pet.getID() == updateID) {
+                        System.out.println("Enter a new name: ");
+                        String newName = scanner.nextLine();
+                        
+                        System.out.println("Enter a new age: ");
+                        int newAge = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        pet.setName(newName);
+                        pet.setAge(newAge);
+                        
+                        System.out.println("Pet has been updated!");
+                        idFound = true;
+                        break;
+                    }
+                }
+                if (!idFound) {
+                    System.out.println("No pet goung with that ID.");
+                }
             }
             else if (choice == 4) {
-                //code here
+                System.out.println("Enter the ID of the pet you'd like to delete.");
+                int removeID = scanner.nextInt();
+                scanner.nextLine();
+                
+                boolean removed = false;
+                
+                for (int i = 0; i < pets.size(); i++) {
+                    if (pets.get(i).getID() == removeID) {
+                        pets.remove(i);
+                        System.out.println("Pet removed successfully!");
+                        removed = true;
+                        break;
+                    }
+                }
+                if (!removed) {
+                    System.out.println("No pet found with that ID.");
+                }
             }
             else if (choice == 5) {
                 System.out.println("Enter name of the pet you want to search: ");
