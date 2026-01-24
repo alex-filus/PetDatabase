@@ -7,6 +7,8 @@ package com.mycompany.petdatabase;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.PrintWriter;
 
 public class PetDatabase {
 
@@ -16,7 +18,9 @@ public class PetDatabase {
         boolean running = true;                    
         
         ArrayList<Pet> pets = new ArrayList<>();
-        
+        String filename = "pets.txt";
+        loadPetsFromFile(pets, "pets.txt");
+                
         while (running) {
 
             System.out.println("Welcome to Pet Database Program!");
@@ -31,7 +35,7 @@ public class PetDatabase {
             System.out.print("Your choice: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // clears newline
+            scanner.nextLine(); 
             
             if (choice == 1) {
                 if (pets.isEmpty()) {
@@ -55,7 +59,9 @@ public class PetDatabase {
                     String name = scanner.nextLine();
 
                     if (name.equalsIgnoreCase("done")) {
-                        break; // exit the add-pet loop
+                        savePetsToFile(pets, filename);
+                        System.out.println("Pets saved to file.");
+                        break; 
                     }
                     
                    System.out.print("Enter pet age: ");
@@ -165,4 +171,46 @@ public class PetDatabase {
             }
         }
     }
+
+    
+    //Save pets to file
+        public static void savePetsToFile(ArrayList<Pet> pets, String filename) {
+            try {
+                PrintWriter writer = new PrintWriter(filename);
+
+                for (Pet pet : pets) {
+                writer.println(pet.getID());
+                writer.println(pet.getName());
+                writer.println(pet.getAge());
+                }
+
+            writer.close();
+            }
+            catch (Exception e) {
+                System.out.println("Error saving to file.");
+            }
+        }
+        
+      //Load pets from file
+        public static void loadPetsFromFile(ArrayList<Pet> pets, String filename) {
+            try {
+                Scanner fileScanner = new Scanner(new File(filename));
+
+                while (fileScanner.hasNextInt()) {
+                    int id = fileScanner.nextInt();
+                    fileScanner.nextLine(); 
+
+                    String name = fileScanner.nextLine();
+                    int age = fileScanner.nextInt();
+                    fileScanner.nextLine(); 
+
+                    pets.add(new Pet(id, name, age));
+                }
+
+            fileScanner.close();
+            }   
+            catch (Exception e) {
+                System.out.println("No existing file found."); //start a brand new file
+            }
+        }
 }
