@@ -152,7 +152,7 @@ public class PetDatabase {
                     }
                 }
                 if (!idFound) {
-                    System.out.println("No pet goung with that ID.");
+                    System.out.println("No pet found with that ID.");
                 }
             }
             else if (choice == 4) {
