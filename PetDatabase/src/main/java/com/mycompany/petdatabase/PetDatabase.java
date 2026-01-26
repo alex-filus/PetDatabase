@@ -12,8 +12,10 @@ import java.io.PrintWriter;
 
 public class PetDatabase {
 
+    public static final int PETS_MAX = 5;
+    
     public static void main(String[] args) {
-
+        
         Scanner scanner = new Scanner(System.in); 
         boolean running = true;                    
         
@@ -53,34 +55,85 @@ public class PetDatabase {
             }
             
             else if (choice ==2) {
+               
+                if (pets.size() >= PETS_MAX) {
+                    System.out.println("Maximum number of pets have been reached.");
+                    continue;
+                }
+                
                 int count = 0;
+                
                 while (true) {
-                    System.out.print("Enter pet name (or type 'done' to finish): ");
-                    String name = scanner.nextLine();
-
-                    if (name.equalsIgnoreCase("done")) {
-                        savePetsToFile(pets, filename);
-                        System.out.println("Pets saved to file.");
-                        break; 
+                    if (pets.size() == PETS_MAX){
+                        System.out.println("Database is full.");
+                        break;
                     }
                     
-                   System.out.print("Enter pet age: ");
-                   int age = scanner.nextInt();
-                   scanner.nextLine();
+                    String name;
+                    while (true) {
+                        System.out.print("Enter pet name (or type 'done' to finish): ");
+                        name = scanner.nextLine().trim();
+
+                        if (name.equalsIgnoreCase("done")) {                       
+                            break; 
+                    }
                     
+                       if (name.isEmpty()) {
+                           System.out.println("Pet name can't be empty. Please try again.");
+                           continue;
+                       }
+                       break;
+                    }
+                   int age;
+                   while (true) {
+                        System.out.print("Enter pet age (1-20): ");
+                        if (scanner.hasNextInt()) {
+                           age = scanner.nextInt();
+                           scanner.nextLine(); 
+                           if (age >= 1 && age <= 20) {
+                               break;
+                           }
+                           else {
+                               System.out.println("Invalid age. Should be between 1-20. Try again.");
+                           }
+                        }
+                        else {
+                            scanner.nextLine();
+                            System.out.println("Invalid entry. Please enter a number between  1 and 20.");
+                        }
+                   }             
                     pets.add(new Pet(pets.size(), name, age));
                     count++;
                 }
+                
+                savePetsToFile(pets, filename);
+                System.out.println("Pets saved to file.");
                 System.out.println(count + " pets added.");
             }
             
             else if (choice == 3) {
-                System.out.println("Enter the ID of the pet to update: ");
-                int updateID = scanner.nextInt();
-                scanner.nextLine();
-                
+                int updateID;
+                    while (true) {
+                        System.out.print("Enter the ID of the pet to update: ");
+                        if (scanner.hasNextInt()) {
+                            updateID = scanner.nextInt();
+                            scanner.nextLine(); 
+
+                        if (updateID >= 0 && updateID < pets.size()) {
+                            break; 
+                        } 
+                        else {
+                            System.out.println("Invalid ID. Must be between 0 and " + (pets.size() - 1) + ".");
+                        }
+                    }   
+                    else {
+                        scanner.nextLine(); 
+                        System.out.println("Invalid input. Please enter a number.");
+                    }
+                    }
+
                 boolean idFound = false;
-                
+            
                 for (Pet pet: pets) {
                     if (pet.getID() == updateID) {
                         System.out.println("Enter a new name: ");
@@ -103,10 +156,25 @@ public class PetDatabase {
                 }
             }
             else if (choice == 4) {
-                System.out.println("Enter the ID of the pet you'd like to delete.");
-                int removeID = scanner.nextInt();
-                scanner.nextLine();
-                
+                int removeID;
+                while (true) {
+                    System.out.println("Enter the ID of the pet you'd like to delete.");
+                    if (scanner.hasNextInt()) {
+                        removeID = scanner.nextInt();
+                        scanner.nextLine();
+                        if (removeID >= 0 && removeID < pets.size()) {
+                            break;
+                        }
+                        else {
+                            System.out.println("Invalid ID. Please try again.");
+                        }
+                    }
+                    else {
+                        scanner.nextLine();
+                        System.out.println("Invalid input. Please try again.");
+                    }
+                }
+
                 boolean removed = false;
                 
                 for (int i = 0; i < pets.size(); i++) {
